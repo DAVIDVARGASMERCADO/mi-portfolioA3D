@@ -1,3 +1,29 @@
+//Ejercicio Adivina el número:
+let num = Math.floor(Math.random() * 100) + 1;
+let intentos = 0;
+
+function GenerarNum() {
+    num = Math.floor(Math.random() * 100) + 1;
+    console.log("Número generado: " + num);
+    document.getElementById("adivinatexto").innerHTML = "Se ha generado un nuevo número. ¡Empieza a adivinar! intentos: 0";
+    intentos = 0;
+}
+function AdivinaNum() {
+    let adivina = Number(document.getElementById("adivina").value);
+    intentos++;
+    if (adivina === num) {
+        document.getElementById("adivinatexto").innerHTML = "¡Felicidades! Has adivinado el número en " + intentos + " intentos.";
+        intentos = 0;
+        num = Math.floor(Math.random() * 100) + 1;
+    } else if (adivina < num) {
+        document.getElementById("adivinatexto").innerHTML = "Demasiado bajo. Intenta de nuevo. Intentos: " + intentos;
+    } else if (adivina < 0 || adivina > 100) {
+        document.getElementById("adivinatexto").innerHTML = "Por favor ingresa un número entre 1 y 100. Intentos: " + intentos;
+    } else {
+        document.getElementById("adivinatexto").innerHTML = "Demasiado alto. Intenta de nuevo. Intentos: " + intentos;
+    }
+}
+
 function eje0() {
     alert("Bienvenido a mi portafolio");
     let respuesta = confirm("¿Te gustaría continuar?");
@@ -68,23 +94,4 @@ function eje7() {
 function saluda() {
     let nombre = document.getElementById("nombre").value;
     document.getElementById("nombreSaludos").innerHTML = " " + nombre + "";
-}
-let num = Math.floor(Math.random() * 100) + 1;
-let intentos = 0;
-function GenerarNum() {
-    num = Math.floor(Math.random() * 100) + 1;
-    console.log("Número generado: " + num);
-}
-function AdivinaNum() {
-    let adivina = Number(document.getElementById("adivina").value);
-    intentos++;
-    if (adivina === num) {
-        document.getElementById("adivinatexto").innerHTML = "¡Felicidades! Has adivinado el número en " + intentos + " intentos.";
-        intentos = 0;
-        num = Math.floor(Math.random() * 100) + 1;
-    } else if (adivina < num) {
-        document.getElementById("adivinatexto").innerHTML = "Demasiado bajo. Intenta de nuevo. Intentos: " + intentos;
-    } else {
-        document.getElementById("adivinatexto").innerHTML = "Demasiado alto. Intenta de nuevo. Intentos: " + intentos;
-    }
 }
