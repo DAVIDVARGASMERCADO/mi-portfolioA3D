@@ -3,10 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Hola</title>
     <script src="js1.js" defer></script>
 </head>
 <body>
     <h1>Mi primera chamba</h1>
+    <h2 id="nombreSaludos"></h2>
+    <label>cual es tu nombre</label>
+    <input type="text" id="nombre" value=""/>
+    <button onclick="saluda()">Envia</button>
+
+    <label>Generar número secreto del 1 al 100</label>
+    <button onclick="GenerarNum()">Generar</button>
+
+    <h2 id="adivinatexto"></h2>
+    <label>Adivina el numero</label>
+    <input type="number" id="adivina" value=""/>
+    <button onclick="AdivinaNum()">Adivina mamahuevo</button>
+
 </body>
 </html>
