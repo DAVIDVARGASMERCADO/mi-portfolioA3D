@@ -1,3 +1,5 @@
+let palabra = "";
+
 function crearTeclado(num) {
     let teclado = document.getElementById("tablaNum");
     for (let i = 1; i < num; i++) {
@@ -7,7 +9,7 @@ function crearTeclado(num) {
         tecla.className = "tecla";
 
         cambiaFondoNum(i, tecla);
-        
+
 
         teclado.appendChild(tecla);
     }
@@ -99,15 +101,33 @@ function borrarLetra() {
     miTexto.textContent = miTexto.textContent.slice(0, -1);
 }
 
-function comprobarPalabra() {
-    let palabraSecreta = "CASAS";
-    let miTexto = document.getElementById("miTexto").textContent;
 
-    if (miTexto === palabraSecreta) {
+function comprobarPalabra() {
+    let miTexto = document.getElementById("miTexto").textContent;
+    let pista = document.getElementById("textopista");
+    if (miTexto === palabra) {
         alert("¡Felicidades! Has adivinado la palabra secreta.");
         borrarTexto();
     } else {
-        alert("Lo siento, esa no es la palabra correcta. Inténtalo de nuevo.");
-        borrarTexto();
+        for (let i = 0; i < palabra.length; i++) {
+            if (miTexto[i] == palabra[i]) {
+                pista.textContent += miTexto[i] + " ";
+            }
+            else {
+                document.getElementById("textopista").textContent += "_";
+                pista.textContent = pista.textContent.slice(0, -1);
+            }
+        }
     }
 }
+function palabraSecreta() {
+    fetch('https://random-word-api.herokuapp.com/word?lang=es&length=5')
+        .then(response => response.json())
+        .then(data => {
+            palabra = data[0]; // La API devuelve un array, ej: ["perro"]
+
+            palabra = palabra.toUpperCase();
+            console.log("Tu palabra secreta es:", palabra);
+        });
+}
+palabraSecreta();
