@@ -1,8 +1,7 @@
-let palabra = "";
-
-function crearTeclado(num) {
+//FUNCIONES PARA CREAR TECLADO NUMERICO:
+function crearTeclado(teclesNum) {
     let teclado = document.getElementById("tablaNum");
-    for (let i = 1; i < num; i++) {
+    for (let i = 1; i < teclesNum; i++) {
         let tecla = document.createElement("div");
 
         tecla.innerHTML = "<p>" + i + "</p>";
@@ -10,11 +9,9 @@ function crearTeclado(num) {
 
         cambiaFondoNum(i, tecla);
 
-
         teclado.appendChild(tecla);
     }
 }
-
 function esPrimo(n) {
     if (n < 2) return false;
     for (let i = 2; i <= Math.sqrt(n); i++) {
@@ -22,7 +19,6 @@ function esPrimo(n) {
     }
     return true;
 }
-
 function cambiaFondoNum(i, tecla) {
     if (esPrimo(i)) {
         // NÚMEROS PRIMOS → Amarillo
@@ -45,7 +41,7 @@ function cambiaFondoNum(i, tecla) {
         }
     }
 }
-
+//FUNCIONES PARA CREAR TECLADO ALFABÉTICO:
 function crearTecladoABC() {
     let teclado = document.getElementById("tablaABC");
 
@@ -60,65 +56,69 @@ function crearTecladoABC() {
         teclado.appendChild(tecla);
     }
 }
-
 function cambiaFondoABC(i, tecla) {
-    // NO PRIMOS → Colores según múltiplos
     if (i === 65 || i === 69 || i === 73 || i === 79 || i === 85) {
         tecla.style.backgroundColor = "Orange";
         tecla.style.color = "white";
     }
     else { tecla.style.backgroundColor = "grey"; }
 }
-crearTeclado(10);
-
-crearTecladoABC();
-
-function AdivinaPalabra() {
-    let palabraSecreta = "JAVASCRIPT";
-
-    if (document.getElementById("escriu").value === palabraSecreta) {
-        alert("¡Felicidades! Has adivinado la palabra secreta.");
-    } else {
-        alert("Lo siento, esa no es la palabra correcta. Inténtalo de nuevo.");
+//FUNCIONES PARA CREAR WORDLE:
+function crearWordle() {
+    let wordle = document.getElementById("wordle");
+    for (let i = 0; i < 5; i++) {
+        let casilla = document.createElement("div");
+        console.log("hola");
+        casilla.innerHTML = "<p></p>";
+        casilla.className = "casilla";
+        wordle.appendChild(casilla);
     }
 }
-
+//FUNCIONES WORDLE:
 function escribeLetra(letra) {
-    console.log(letra);
     let miTexto = document.getElementById("miTexto");
     if (miTexto.textContent.length < 5) {
         miTexto.textContent += letra;
     }
 }
-
 function borrarTexto() {
     let miTexto = document.getElementById("miTexto");
     miTexto.textContent = "";
 }
-
 function borrarLetra() {
     let miTexto = document.getElementById("miTexto");
     miTexto.textContent = miTexto.textContent.slice(0, -1);
 }
-
-
 function comprobarPalabra() {
     let miTexto = document.getElementById("miTexto").textContent;
-    let pista = document.getElementById("textopista");
+    let wordle = document.getElementById("wordle");
     if (miTexto === palabra) {
         alert("¡Felicidades! Has adivinado la palabra secreta.");
         borrarTexto();
-    } else {
-        for (let i = 0; i < palabra.length; i++) {
-            if (miTexto[i] == palabra[i]) {
-                pista.textContent += miTexto[i] + " ";
+    }
+    else {
+        console.log("Palabra incorrecta. Intenta de nuevo.");
+        for (i = 0; i < 5; i++) {
+            if (miTexto[i] === palabra[i]) {
+                wordle.children[i].style.backgroundColor = "green";
+                wordle.children[i].style.color = "white";
+            }
+            else if (palabra.includes(miTexto[i]) && miTexto[i] !== palabra[i]) {
+                wordle.children[i].style.backgroundColor = "yellow";
+                wordle.children[i].style.color = "black";
             }
             else {
-                document.getElementById("textopista").textContent += "_";
-                pista.textContent = pista.textContent.slice(0, -1);
+                wordle.children[i].style.backgroundColor = "grey";
+                wordle.children[i].style.color = "white";
+
             }
+            wordle.children[i].innerHTML = "<p>" + miTexto[i] + "</p>";
         }
+        borrarTexto();
     }
+}
+function cambiarFondoWordle(miTexto, wordle) {
+    
 }
 function palabraSecreta() {
     fetch('https://random-word-api.herokuapp.com/word?lang=es&length=5')
@@ -130,4 +130,10 @@ function palabraSecreta() {
             console.log("Tu palabra secreta es:", palabra);
         });
 }
+let palabra = "";
+let teclesNum = 10;
+
+crearTeclado(teclesNum);
+crearTecladoABC();
 palabraSecreta();
+crearWordle();
