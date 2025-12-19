@@ -135,6 +135,14 @@ function comprobarPalabra() {
             }
             wordle.children[i].innerHTML = "<p>" + miTexto[diferencia] + "</p>";
         }
+        
+        if (intentos === 6) {
+            alert("Has perdido.");
+            borrarTexto();
+            borrarWordle();
+            crearWordle();
+            palabraSecreta();
+        }
     }
 
     intentos += 1;
