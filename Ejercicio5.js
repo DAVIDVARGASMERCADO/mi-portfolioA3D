@@ -21,12 +21,10 @@ function esPrimo(n) {
 }
 function cambiaFondoNum(i, tecla) {
     if (esPrimo(i)) {
-        // NÚMEROS PRIMOS → Amarillo
         tecla.style.backgroundColor = "yellow";
         tecla.style.color = "black";
     } else {
 
-        // NO PRIMOS → Colores según múltiplos
         if (i % 2 === 0) {
             tecla.style.backgroundColor = "blue";
             tecla.style.color = "white";
@@ -63,47 +61,70 @@ function cambiaFondoABC(i, tecla) {
     }
     else { tecla.style.backgroundColor = "grey"; }
 }
-//FUNCIONES PARA CREAR WORDLE:
+//FUNCIONES WORDLE:
 function crearWordle() {
     let wordle = document.getElementById("wordle");
-    for (let i = 0; i < 5; i++) {
+    inicioCasilla = 0;
+    finalCasilla = 5;
+    for (let i = 0; i < 30; i++) {
         let casilla = document.createElement("div");
-        console.log("hola");
         casilla.innerHTML = "<p></p>";
         casilla.className = "casilla";
         wordle.appendChild(casilla);
     }
 }
-//FUNCIONES WORDLE:
 function escribeLetra(letra) {
     let miTexto = document.getElementById("miTexto");
     if (miTexto.textContent.length < 5) {
         miTexto.textContent += letra;
     }
 }
-function borrarTexto() {
-    let miTexto = document.getElementById("miTexto");
-    miTexto.textContent = "";
-}
-function borrarLetra() {
-    let miTexto = document.getElementById("miTexto");
-    miTexto.textContent = miTexto.textContent.slice(0, -1);
-}
 function comprobarPalabra() {
     let miTexto = document.getElementById("miTexto").textContent;
     let wordle = document.getElementById("wordle");
+
+    if (intentos === 0) {
+        inicioCasilla = 0;
+        finalCasilla = 5;
+    }
+    if (intentos === 1) {
+        inicioCasilla = 5;
+        finalCasilla = 10;
+    }
+    if (intentos === 2) {
+        inicioCasilla = 10;
+        finalCasilla = 15;
+    }
+    if (intentos === 3) {
+        inicioCasilla = 15;
+        finalCasilla = 20;
+    }
+    if (intentos === 4) {
+        inicioCasilla = 20;
+        finalCasilla = 25;
+    }
+    if (intentos === 5) {
+        inicioCasilla = 25;
+        finalCasilla = 30;
+    }
+
     if (miTexto === palabra) {
         alert("¡Felicidades! Has adivinado la palabra secreta.");
         borrarTexto();
+        borrarWordle();
+        crearWordle();
+        palabraSecreta();
     }
     else {
         console.log("Palabra incorrecta. Intenta de nuevo.");
-        for (i = 0; i < 5; i++) {
-            if (miTexto[i] === palabra[i]) {
+        for (i = inicioCasilla; i < finalCasilla; i++) {
+            let diferencia = Math.abs(finalCasilla - i - 5);
+
+            if (miTexto[diferencia] === palabra[diferencia]) {
                 wordle.children[i].style.backgroundColor = "green";
                 wordle.children[i].style.color = "white";
             }
-            else if (palabra.includes(miTexto[i]) && miTexto[i] !== palabra[i]) {
+            else if (palabra.includes(miTexto[diferencia]) && miTexto[diferencia] !== palabra[diferencia]) {
                 wordle.children[i].style.backgroundColor = "yellow";
                 wordle.children[i].style.color = "black";
             }
@@ -112,13 +133,20 @@ function comprobarPalabra() {
                 wordle.children[i].style.color = "white";
 
             }
-            wordle.children[i].innerHTML = "<p>" + miTexto[i] + "</p>";
+            wordle.children[i].innerHTML = "<p>" + miTexto[diferencia] + "</p>";
         }
-        borrarTexto();
     }
+
+    intentos += 1;
+    borrarTexto();
 }
-function cambiarFondoWordle(miTexto, wordle) {
-    
+function borrarTexto() {
+    let miTexto = document.getElementById("miTexto");
+    miTexto.textContent = "";
+}
+function borrarLetra() {
+    let miTexto = document.getElementById("miTexto");
+    miTexto.textContent = miTexto.textContent.slice(0, -1);
 }
 function palabraSecreta() {
     fetch('https://random-word-api.herokuapp.com/word?lang=es&length=5')
@@ -130,8 +158,17 @@ function palabraSecreta() {
             console.log("Tu palabra secreta es:", palabra);
         });
 }
+function borrarWordle() {
+    document.getElementById("wordle").innerHTML = "";
+    inicioCasilla = 0;
+    finalCasilla = 5;
+}
+
 let palabra = "";
 let teclesNum = 10;
+let intentos = 0;
+let inicioCasilla = 0;
+let finalCasilla = 5;
 
 crearTeclado(teclesNum);
 crearTecladoABC();
